@@ -2,6 +2,8 @@ package com.example.kopapirollo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,13 +19,13 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonKo, buttonPapir, buttonOllo;
     private TextView textViewEmber, textViewComputer;
     private int player, computer;
+    private AlertDialog.Builder jatekVege;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        //ujJatek();
         buttonKo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,11 +91,17 @@ public class MainActivity extends AppCompatActivity {
     private void gepPont() {
         computer += 1;
         textViewComputer.setText("Computer: " + computer);
+        if (computer == 3){
+            jatekVege.setTitle("Vereség").create().show();
+        }
     }
 
     private void jatekosPont() {
         player += 1;
         textViewEmber.setText("Ember: " + player);
+        if (player == 3){
+            jatekVege.setTitle("Győzelem").create().show();
+        }
     }
 
     private void init(){
@@ -104,11 +112,30 @@ public class MainActivity extends AppCompatActivity {
         buttonOllo = findViewById(R.id.buttonOllo);
         textViewEmber = findViewById(R.id.textViewEmber);
         textViewComputer = findViewById(R.id.textViewComputer);
+        jatekVege = new AlertDialog.Builder(MainActivity.this);
+        jatekVege.setCancelable(false)
+                .setTitle("Győzelem / Vereség")
+                .setMessage("Szeretne új játékot játszani?")
+                .setNegativeButton("Nem", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ujJatek();
+                    }
+                })
+                .create();
     }
 
     private void ujJatek(){
-        int player = 1;
-        int computer = 1;
+        textViewEmber.setText("Ember: 0");
+        player = 0;
+        textViewComputer.setText("Computer: 0");
+        computer = 0;
     }
 
     private int computerValaszt(){

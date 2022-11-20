@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,10 +16,10 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView playerValasztas, computerValasztas;
-    private Button buttonKo, buttonPapir, buttonOllo;
-    private TextView textViewEmber, textViewComputer;
-    private int player, computer;
+    private ImageView playerValasztas, computerValasztas, gepElet1, gepElet2, gepElet3, jatekosElet1, jatekosElet2, jatekosElet3;
+    private ImageButton buttonKo, buttonPapir, buttonOllo;
+    private TextView textViewDontetlen;
+    private int player, computer, dontetlen;
     private AlertDialog.Builder jatekVege;
 
     @Override
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (computerValaszt){
                     case 0:
                         Toast.makeText(MainActivity.this, "Döntetlen", Toast.LENGTH_SHORT).show();
+                        dontetlenPont();
                         break;
                     case 1:
                         Toast.makeText(MainActivity.this, "A gép nyert pontot", Toast.LENGTH_SHORT).show();
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 1:
                         Toast.makeText(MainActivity.this, "Döntetlen", Toast.LENGTH_SHORT).show();
+                        dontetlenPont();
                         break;
                     case 2:
                         Toast.makeText(MainActivity.this, "A gép nyert pontot", Toast.LENGTH_SHORT).show();
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 2:
                         Toast.makeText(MainActivity.this, "Döntetlen", Toast.LENGTH_SHORT).show();
+                        dontetlenPont();
                         break;
                 }
             }
@@ -90,7 +94,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void gepPont() {
         computer += 1;
-        textViewComputer.setText("Computer: " + computer);
+        switch (computer){
+            case 1:
+                jatekosElet3.setImageResource(R.drawable.heart1);
+                break;
+            case 2:
+                jatekosElet2.setImageResource(R.drawable.heart1);
+                break;
+            case 3:
+                jatekosElet1.setImageResource(R.drawable.heart1);
+                break;
+        }
         if (computer == 3){
             jatekVege.setTitle("Vereség").create().show();
         }
@@ -98,10 +112,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void jatekosPont() {
         player += 1;
-        textViewEmber.setText("Ember: " + player);
+        switch (player){
+            case 1:
+                gepElet1.setImageResource(R.drawable.heart1);
+                break;
+            case 2:
+                gepElet2.setImageResource(R.drawable.heart1);
+                break;
+            case 3:
+                gepElet3.setImageResource(R.drawable.heart1);
+                break;
+        }
         if (player == 3){
             jatekVege.setTitle("Győzelem").create().show();
         }
+    }
+
+    private void dontetlenPont() {
+        dontetlen += 1;
+        textViewDontetlen.setText("Döntetlenek száma: " + dontetlen);
     }
 
     private void init(){
@@ -110,8 +139,13 @@ public class MainActivity extends AppCompatActivity {
         buttonKo = findViewById(R.id.buttonKo);
         buttonPapir = findViewById(R.id.buttonPapir);
         buttonOllo = findViewById(R.id.buttonOllo);
-        textViewEmber = findViewById(R.id.textViewEmber);
-        textViewComputer = findViewById(R.id.textViewComputer);
+        textViewDontetlen = findViewById(R.id.textViewDontetlen);
+        gepElet1 = findViewById(R.id.imageViewGepElet1);
+        gepElet2 = findViewById(R.id.imageViewGepElet2);
+        gepElet3 = findViewById(R.id.imageViewGepElet3);
+        jatekosElet1 = findViewById(R.id.imageViewJatekosElet1);
+        jatekosElet2 = findViewById(R.id.imageViewJatekosElet2);
+        jatekosElet3 = findViewById(R.id.imageViewJatekosElet3);
         jatekVege = new AlertDialog.Builder(MainActivity.this);
         jatekVege.setCancelable(false)
                 .setTitle("Győzelem / Vereség")
@@ -132,10 +166,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ujJatek(){
-        textViewEmber.setText("Ember: 0");
         player = 0;
-        textViewComputer.setText("Computer: 0");
         computer = 0;
+        textViewDontetlen.setText("Döntetlenek száma: 0");
+        dontetlen = 0;
+        gepElet1.setImageResource(R.drawable.heart2);
+        gepElet2.setImageResource(R.drawable.heart2);
+        gepElet3.setImageResource(R.drawable.heart2);
+        jatekosElet1.setImageResource(R.drawable.heart2);
+        jatekosElet2.setImageResource(R.drawable.heart2);
+        jatekosElet3.setImageResource(R.drawable.heart2);
     }
 
     private int computerValaszt(){
